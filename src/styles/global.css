@@ -4,8 +4,8 @@
 @import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities);
 
-/* tailwind to ignore satori generated og-image */
-@source not "../pages/og-image";
+/* Tailwind should ignore the generated image endpoint. */
+@source not "../pages/social-card.png.ts";
 /* config for tailwindcss-typography plugin */
 @config "../../tailwind.config.ts";
 

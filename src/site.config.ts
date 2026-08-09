@@ -2,8 +2,7 @@ import type { AstroExpressiveCodeOptions } from "astro-expressive-code";
 import type { SiteConfig } from "@/types";
 
 export const siteConfig: SiteConfig = {
-	// 部署后会替换为实际的 Vercel 生产域名。
-	url: "https://ctf-blog.vercel.app/",
+	url: "https://ctf-blog-mocha.vercel.app/",
 	/*
 		- Used to construct the meta title property found in src/components/BaseHead.astro L:11
 		- The webmanifest name found in astro.config.ts L:42
@@ -11,7 +10,7 @@ export const siteConfig: SiteConfig = {
 		- In the footer found in src/components/layout/Footer.astro L:12
 	*/
 	title: "CTF Notes",
-	// Used as both a meta property (src/components/BaseHead.astro L:31 + L:49) & the generated satori png (src/pages/og-image/[slug].png.ts)
+	// Used in page metadata and the generated social card.
 	author: "zhaochoudecat",
 	// Used as the default description meta property and webmanifest description
 	description: "记录 CTF、Web 安全与靶场实践的技术博客",

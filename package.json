@@ -1,16 +1,16 @@
 {
-	"name": "astro-cactus",
+	"name": "ctf-blog",
 	"type": "module",
 	"version": "8.2.0",
-	"private": false,
+	"private": true,
 	"scripts": {
-		"postinstall": "npm rebuild sharp --force",
+		"postinstall": "pnpm rebuild sharp",
 		"dev": "astro dev",
 		"start": "astro dev",
 		"build": "astro build",
 		"postbuild": "pagefind --site dist",
 		"preview": "astro preview",
-		"check": "astro check && biome check",
+		"check": "astro check && biome lint",
 		"lint": "biome check --write",
 		"format": "prettier -w . --cache"
 	},

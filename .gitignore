@@ -23,3 +23,10 @@ pnpm-debug.log*
 *.pem
 .cache
 .astro
+
+# Obsidian local-only state
+content/.obsidian/workspace*.json
+content/.obsidian/cache/
+content/.obsidian/plugins/
+content/.obsidian/themes/
+content/.trash/

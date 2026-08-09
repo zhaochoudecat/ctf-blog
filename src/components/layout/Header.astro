@@ -6,7 +6,7 @@ import { siteConfig } from "../../site.config";
 ---
 
 <header
-	class:list={["group relative mb-28 flex items-center", siteConfig.showLogo && "sm:ps-18"]}
+	class:list={["group relative mb-16 flex items-center", siteConfig.showLogo && "sm:ps-18"]}
 	id="main-header"
 >
 	<div class="flex sm:flex-col sm:items-start">
@@ -40,7 +40,9 @@ import { siteConfig } from "../../site.config";
 					</svg>
 				)
 			}
-			<span class="text-accent-2 text-xl font-bold sm:text-2xl">{siteConfig.title}</span>
+			<span class="text-accent-2 text-xl font-bold tracking-tight sm:text-2xl"
+				>{siteConfig.title}</span
+			>
 		</a>
 		<nav
 			aria-label="Main"
@@ -70,7 +72,7 @@ import { siteConfig } from "../../site.config";
 			id="toggle-navigation-menu"
 			type="button"
 		>
-			<span class="sr-only">Open main menu</span>
+			<span class="sr-only">打开主菜单</span>
 			<svg
 				aria-hidden="true"
 				class="absolute start-1/2 top-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 transition-all group-aria-expanded:scale-0 group-aria-expanded:opacity-0"

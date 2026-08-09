@@ -2,32 +2,28 @@ import type { AstroExpressiveCodeOptions } from "astro-expressive-code";
 import type { SiteConfig } from "@/types";
 
 export const siteConfig: SiteConfig = {
-	// ! Please remember to replace the following site property with your own domain, used in astro.config.ts
-	url: "https://astro-cactus.chriswilliams.dev/",
+	// 部署后会替换为实际的 Vercel 生产域名。
+	url: "https://ctf-blog.vercel.app/",
 	/*
 		- Used to construct the meta title property found in src/components/BaseHead.astro L:11
 		- The webmanifest name found in astro.config.ts L:42
 		- The link value found in src/components/layout/Header.astro L:35
 		- In the footer found in src/components/layout/Footer.astro L:12
 	*/
-	title: "Astro Cactus",
+	title: "CTF Notes",
 	// Used as both a meta property (src/components/BaseHead.astro L:31 + L:49) & the generated satori png (src/pages/og-image/[slug].png.ts)
-	author: "Chris Williams",
+	author: "zhaochoudecat",
 	// Used as the default description meta property and webmanifest description
-	description: "An opinionated starter theme for Astro",
+	description: "记录 CTF、Web 安全与靶场实践的技术博客",
 	// HTML lang property, found in src/layouts/Base.astro L:18 & astro.config.ts L:48
-	lang: "en-GB",
+	lang: "zh-CN",
 	// Meta property, found in src/components/BaseHead.astro L:42
-  ogLocale: "en_GB",
-  // Determines whether to show the logo in the templates header
-	showLogo: true,
+	ogLocale: "zh_CN",
+	// Determines whether to show the logo in the templates header
+	showLogo: false,
 	// Date.prototype.toLocaleDateString() parameters, found in src/utils/date.ts.
 	date: {
-		options: {
-			day: "numeric",
-			month: "short",
-			year: "numeric",
-		},
+		options: { year: "numeric", month: "2-digit", day: "2-digit" },
 	},
 };
 
@@ -35,26 +31,26 @@ export const siteConfig: SiteConfig = {
 export const menuLinks: { path: string; title: string }[] = [
 	{
 		path: "/",
-		title: "Home",
-	},
-	{
-		path: "/about/",
-		title: "About",
+		title: "首页",
 	},
 	{
 		path: "/posts/",
-		title: "Blog",
+		title: "文章",
 	},
 	{
-		path: "/notes/",
-		title: "Notes",
+		path: "/tags/",
+		title: "标签",
+	},
+	{
+		path: "/about/",
+		title: "关于",
 	},
 ];
 
 // https://expressive-code.com/reference/configuration/
 export const expressiveCodeOptions: AstroExpressiveCodeOptions = {
 	styleOverrides: {
-		borderRadius: "4px",
+		borderRadius: "8px",
 		codeFontFamily:
 			'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
 		codeFontSize: "0.875rem",

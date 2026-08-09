@@ -1,4 +1,3 @@
-import fs from "node:fs";
 import { satteri, satteriHeadingIdsPlugin } from "@astrojs/markdown-satteri";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
@@ -55,8 +54,8 @@ export default defineConfig({
 				},
 			],
 			start_url: "/",
-			background_color: "#1d1f21",
-			theme_color: "#2bbc8a",
+			background_color: "#fafafa",
+			theme_color: "#247fa5",
 			display: "standalone",
 			config: {
 				insertFaviconLinks: false,
@@ -83,7 +82,7 @@ export default defineConfig({
 		}),
 	},
 	vite: {
-		plugins: [tailwind(), rawFonts([".ttf", ".woff"])],
+		plugins: [tailwind()],
 	},
 	env: {
 		schema: {
@@ -93,20 +92,3 @@ export default defineConfig({
 		},
 	},
 });
-
-function rawFonts(ext: string[]) {
-	return {
-		name: "vite-plugin-raw-fonts",
-		// @ts-expect-error:next-line
-		transform(_, id) {
-			if (ext.some((e) => id.endsWith(e))) {
-				const buffer = fs.readFileSync(id);
-				return {
-					code: `export default ${JSON.stringify(buffer)}`,
-					map: null,
-					moduleType: "js",
-				};
-			}
-		},
-	};
-}

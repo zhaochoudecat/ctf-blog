@@ -28,13 +28,16 @@ export function satteriObsidianHighlightPlugin(): MdastPluginDefinition {
 			for (const match of matches) {
 				const start = match.index;
 				if (start > cursor) replacement.push(text(node.value.slice(cursor, start)));
-				replacement.push(highlight(match[1]));
+				const value = match[1];
+				if (value !== undefined) replacement.push(highlight(value));
 				cursor = start + match[0].length;
 			}
 
 			if (cursor < node.value.length) replacement.push(text(node.value.slice(cursor)));
 
-			ctx.replaceNode(node, replacement[0]);
+			const firstReplacement = replacement[0];
+			if (firstReplacement === undefined) return;
+			ctx.replaceNode(node, firstReplacement);
 			if (replacement.length > 1) ctx.insertAfter(node, replacement.slice(1));
 		},
 	};

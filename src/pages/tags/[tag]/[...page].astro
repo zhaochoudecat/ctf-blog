@@ -15,62 +15,46 @@ export const getStaticPaths = (async ({ paginate }) => {
 
 	return uniqueTags.flatMap((tag) => {
 		const postsWithTag = sortedPosts.filter((post) => post.data.tags.includes(tag));
-		return paginate(postsWithTag, {
-			pageSize: 10,
-			params: { tag },
-		});
+		return paginate(postsWithTag, { pageSize: 10, params: { tag } });
 	});
 }) satisfies GetStaticPaths;
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
-
 const { page } = Astro.props as Props;
 const { tag } = Astro.params;
 const tagMeta = await getTagMeta(tag);
-
 const TagContent = tagMeta ? (await render(tagMeta)).Content : null;
-
+const fallbackTitle = `关于 ${tag} 的文章`;
 const meta = {
-	description: tagMeta?.data.description ?? `View all posts with the tag - ${tag}`,
-	title: tagMeta?.data.title ?? `Posts about ${tag}`,
+	description: tagMeta?.data.description ?? `查看 #${tag} 标签下的全部文章`,
+	title: tagMeta?.data.title ?? fallbackTitle,
 };
-
 const paginationProps = {
-	...(page.url.prev && {
-		prevUrl: {
-			text: "← Previous Tags",
-			url: page.url.prev,
-		},
-	}),
-	...(page.url.next && {
-		nextUrl: {
-			text: "Next Tags →",
-			url: page.url.next,
-		},
-	}),
+	...(page.url.prev && { prevUrl: { text: "← 上一页", url: page.url.prev } }),
+	...(page.url.next && { nextUrl: { text: "下一页 →", url: page.url.next } }),
 };
 ---
 
 <PageLayout meta={meta}>
-	<nav class="mb-8" aria-label="Breadcrumbs">
+	<nav class="mb-8" aria-label="面包屑导航">
 		<ul class="flex items-center">
 			<li class="flex items-center">
-				<a class="text-accent" href="/tags/">Tags</a>
+				<a class="text-accent" href="/tags/">标签</a>
 				<Icon aria-hidden="true" name="mdi:chevron-right" class="mx-1.5" />
 			</li>
-			<li aria-current="page" class=""><span aria-hidden="true">#</span>{tag}</li>
+			<li aria-current="page"><span aria-hidden="true">#</span>{tag}</li>
 		</ul>
 	</nav>
-	<h1 class="title capitalize">{tagMeta?.data.title ?? `Posts about ${tag}`}</h1>
-	<div class="prose prose-sm prose-cactus mb-16 max-w-none">
+	<h1 class="title capitalize">{tagMeta?.data.title ?? fallbackTitle}</h1>
+	<div class="prose prose-sm mb-16 max-w-none">
 		{tagMeta?.data.description && <p>{tagMeta.data.description}</p>}
 		{TagContent && <TagContent />}
 	</div>
 	<ul class="space-y-4">
 		{
-			page.data.map((p) => (
+			page.data.map((post) => (
 				<li class="grid gap-1 sm:grid-cols-[auto_1fr]">
-					<PostPreview as="h2" post={p} />
+					<PostPreview as="h2" post={post} />
 				</li>
 			))
 		}

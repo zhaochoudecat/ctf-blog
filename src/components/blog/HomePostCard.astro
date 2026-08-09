@@ -1,0 +1,36 @@
+---
+import type { CollectionEntry } from "astro:content";
+import FormattedDate from "@/components/FormattedDate.astro";
+
+interface Props {
+	post: CollectionEntry<"post">;
+}
+
+const { post } = Astro.props;
+---
+
+<li class="my-8">
+	<a
+		class="text-accent inline-block text-lg font-semibold decoration-dashed underline-offset-4 hover:underline"
+		href={`/posts/${post.id}/`}
+	>
+		<h3>{post.data.title}</h3>
+	</a>
+	<div class="text-muted mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
+		<FormattedDate date={post.data.publishDate} />
+		{
+			post.data.tags.length > 0 && (
+				<ul class="flex flex-wrap gap-x-2" aria-label="文章标签">
+					{post.data.tags.slice(0, 4).map((tag) => (
+						<li>
+							<a class="hover:text-link" href={`/tags/${tag}/`}>
+								#{tag}
+							</a>
+						</li>
+					))}
+				</ul>
+			)
+		}
+	</div>
+	<p class="mt-2 leading-7">{post.data.description}</p>
+</li>

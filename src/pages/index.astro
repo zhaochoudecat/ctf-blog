@@ -1,84 +1,67 @@
 ---
-import { type CollectionEntry, getCollection } from "astro:content";
-import PostPreview from "@/components/blog/PostPreview.astro";
-import Note from "@/components/note/Note.astro";
+import type { CollectionEntry } from "astro:content";
+import { Icon } from "astro-icon/components";
+import HomePostCard from "@/components/blog/HomePostCard.astro";
 import SocialList from "@/components/SocialList.astro";
 import { getAllPosts } from "@/data/post";
 import PageLayout from "@/layouts/Base.astro";
 import { collectionDateSort } from "@/utils/date";
 
-// Posts
-const MAX_POSTS = 10;
-const allPosts = await getAllPosts();
-const allPostsByDate = allPosts.sort(collectionDateSort) as CollectionEntry<"post">[];
-const latestPosts = allPostsByDate.slice(0, MAX_POSTS);
-
-// Pinned Posts, set to a max of 3;
-const MAX_PINNED_POSTS = 3;
-const pinnedPosts = allPostsByDate
-	.values()
-	.filter((p) => p.data.pinned)
-	.take(MAX_PINNED_POSTS)
-	.toArray();
-
-// Notes, set to a max of 5
-const MAX_NOTES = 5;
-const allNotes = await getCollection("note");
-const latestNotes = allNotes
-	.sort(collectionDateSort)
-	.slice(0, MAX_NOTES) as CollectionEntry<"note">[];
+const MAX_RECENT_POSTS = 6;
+const allPosts = (await getAllPosts()).sort(collectionDateSort) as CollectionEntry<"post">[];
+const featuredPosts = allPosts.filter((post) => post.data.pinned).slice(0, 3);
+const recentPosts = allPosts.filter((post) => !post.data.pinned).slice(0, MAX_RECENT_POSTS);
 ---
 
-<PageLayout meta={{ title: "Home" }}>
-	<section>
-		<h1 class="title mb-12">Hello World!</h1>
-		<p class="mb-4">
-			Hi, I’m a theme for Astro, a simple starter that you can use to create your website or blog.
-			If you want to know more about how you can customise me, add more posts, and make it your own,
-			click on the GitHub icon link below and it will take you to my repo.
+<PageLayout meta={{ title: "首页" }}>
+	<section class="border-muted/25 border-b pb-10 sm:pb-12">
+		<div class="mb-5 flex items-center gap-3">
+			<h1 class="text-accent-2 text-4xl font-bold tracking-tight sm:text-5xl">
+				你好，我是 0xCat。
+			</h1>
+			<a class="text-accent hover:text-link mt-2" href="/rss.xml" title="RSS 订阅">
+				<span class="sr-only">RSS 订阅</span>
+				<Icon aria-hidden="true" class="h-5 w-5" focusable="false" name="mdi:rss" />
+			</a>
+		</div>
+		<p class="max-w-2xl text-base leading-8 sm:text-lg">
+			这里记录 CTF 解题过程、Web
+			安全研究与靶场实践。文章尽量保留完整命令、代码和复现步骤，方便回看，也方便你复现。
 		</p>
-		<SocialList />
+		<div class="mt-5"><SocialList /></div>
 	</section>
+
 	{
-		pinnedPosts.length > 0 && (
-			<section class="mt-16">
-				<h2 class="title mb-6 text-xl">Pinned Posts</h2>
-				<ul class="space-y-4" role="list">
-					{pinnedPosts.map((p) => (
-						<li class="grid gap-1 sm:grid-cols-[auto_1fr]">
-							<PostPreview post={p} />
-						</li>
+		featuredPosts.length > 0 && (
+			<section class="border-muted/25 border-b py-10 sm:py-12">
+				<h2 class="text-accent-2 text-2xl font-semibold tracking-tight">精选文章</h2>
+				<ul role="list">
+					{featuredPosts.map((post) => (
+						<HomePostCard post={post} />
 					))}
 				</ul>
 			</section>
 		)
 	}
-	<section class="mt-16">
-		<h2 class="title text-accent mb-6 text-xl"><a href="/posts/">Posts</a></h2>
-		<ul class="space-y-4" role="list">
-			{
-				latestPosts.map((p) => (
-					<li class="grid gap-1 sm:grid-cols-[auto_1fr]">
-						<PostPreview post={p} />
-					</li>
-				))
-			}
-		</ul>
-	</section>
-	{
-		latestNotes.length > 0 && (
-			<section class="mt-16">
-				<h2 class="title text-accent mb-6 text-xl">
-					<a href="/notes/">Notes</a>
-				</h2>
-				<ul class="space-y-6" role="list">
-					{latestNotes.map((note) => (
-						<li>
-							<Note note={note} as="h3" isPreview />
-						</li>
+
+	<section class="py-10 sm:py-12">
+		<h2 class="text-accent-2 text-2xl font-semibold tracking-tight">最近更新</h2>
+		{
+			recentPosts.length > 0 ? (
+				<ul role="list">
+					{recentPosts.map((post) => (
+						<HomePostCard post={post} />
 					))}
 				</ul>
-			</section>
-		)
-	}
+			) : (
+				<p class="text-muted mt-6">文章正在整理中。</p>
+			)
+		}
+	</section>
+
+	<div class="text-center">
+		<a class="cactus-link inline-flex items-center gap-1 font-semibold" href="/posts/">
+			查看全部文章 <span aria-hidden="true">→</span>
+		</a>
+	</div>
 </PageLayout>

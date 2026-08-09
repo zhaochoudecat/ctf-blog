@@ -2,35 +2,29 @@
 import PageLayout from "@/layouts/Base.astro";
 
 const meta = {
-	description: "I'm a starter theme for Astro.build",
-	title: "About",
+	description: "关于 CTF Notes 与内容发布方式",
+	title: "关于",
 };
 ---
 
 <PageLayout meta={meta}>
-	<h1 class="title mb-12">About</h1>
-	<div class="prose prose-sm prose-cactus max-w-none">
+	<h1 class="title mb-10">关于</h1>
+	<div class="prose prose-sm max-w-none">
 		<p>
-			Hi, I’m a starter Astro. I’m particularly great for getting you started with your own blogging
-			website.
+			这里主要发布 CTF Writeup、Web 安全研究和靶场记录。所有文章使用 Markdown
+			编写，代码展示、行高亮、文件名、终端输出与目录导航由 Astro Cactus 和 Expressive Code 提供。
 		</p>
-		<p>Here are my some of my awesome built in features:</p>
-		<ul class="list-inside list-disc" role="list">
-			<li>I'm ultra fast as I'm a static site</li>
-			<li>I'm fully responsive</li>
-			<li>I come with a light and dark mode</li>
-			<li>I'm easy to customise and add additional content</li>
-			<li>I have Tailwind CSS styling</li>
-			<li>Shiki code syntax highlighting</li>
-			<li>Satori for auto generating OG images for blog posts</li>
-		</ul>
 		<p>
-			Clone or fork my <a
-				class="cactus-link inline-block"
-				href="https://github.com/chrismwilliams/astro-cactus"
+			内容在 Obsidian 中维护，通过 GitHub 在 Windows 与 macOS 之间同步；推送到主分支后由 Vercel
+			自动构建发布。
+		</p>
+		<p>
+			源码托管在 <a
+				class="cactus-link"
+				href="https://github.com/zhaochoudecat/ctf-blog"
 				rel="noreferrer"
-				target="_blank">repo</a
-			> if you like me!
+				target="_blank">GitHub</a
+			>。
 		</p>
 	</div>
 </PageLayout>

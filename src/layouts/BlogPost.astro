@@ -13,7 +13,7 @@ interface Props {
 
 const { post } = Astro.props;
 const { ogImage, title, description, updatedDate, publishDate } = post.data;
-const socialImage = ogImage ?? `/og-image/${post.id}.png`;
+const socialImage = ogImage ?? "/social-card.png";
 const articleDate = updatedDate?.toISOString() ?? publishDate.toISOString();
 const { headings, remarkPluginFrontmatter } = await render(post);
 const readingTime: string = remarkPluginFrontmatter.readingTime;
@@ -44,7 +44,7 @@ const readingTime: string = remarkPluginFrontmatter.readingTime;
 		data-show="false"
 		id="to-top-btn"
 	>
-		<span class="sr-only">Back to top</span>
+		<span class="sr-only">返回顶部</span>
 		<svg
 			aria-hidden="true"
 			class="h-6 w-6"

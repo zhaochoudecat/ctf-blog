@@ -1045,7 +1045,7 @@ curl -s <span class="code-string">"https://目标/upload/&lt;md5&gt;/shell.php.j
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', () => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {

@@ -1,0 +1,33 @@
+---
+import { countObsidianFiles, type ObsidianFolder } from "@/data/obsidian";
+
+interface Props {
+	node: ObsidianFolder;
+	depth?: number;
+}
+
+const { node, depth = 0 } = Astro.props;
+---
+
+<ul class="obsidian-tree" role={depth === 0 ? "tree" : undefined}>
+	{node.folders.map((folder) => (
+		<li class="obsidian-tree__folder" role={depth === 0 ? "treeitem" : undefined}>
+			<details open={depth < 1}>
+				<summary>
+					<span class="obsidian-tree__folder-icon" aria-hidden="true">▾</span>
+					<span>{folder.name}</span>
+					<span class="obsidian-tree__count">{countObsidianFiles(folder)}</span>
+				</summary>
+				<Astro.self node={folder} depth={depth + 1} />
+			</details>
+		</li>
+	))}
+	{node.files.map((file) => (
+		<li class="obsidian-tree__file" role={depth === 0 ? "treeitem" : undefined}>
+			<a href={file.url} title={file.title}>
+				<span class="obsidian-tree__file-icon" aria-hidden="true">▱</span>
+				<span class="obsidian-tree__file-name">{file.name}</span>
+			</a>
+		</li>
+	))}
+</ul>

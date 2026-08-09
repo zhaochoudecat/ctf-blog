@@ -30,3 +30,7 @@ content/.obsidian/cache/
 content/.obsidian/plugins/
 content/.obsidian/themes/
 content/.trash/
+
+# Generated locally from the sibling Obsidian vault
+content/posts/_obsidian/
+public/_obsidian/

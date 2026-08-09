@@ -1,67 +1,65 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { Icon } from "astro-icon/components";
-import HomePostCard from "@/components/blog/HomePostCard.astro";
+import Search from "@/components/Search.astro";
 import SocialList from "@/components/SocialList.astro";
+import ThemeToggle from "@/components/ThemeToggle.astro";
+import HomePostCard from "@/components/blog/HomePostCard.astro";
 import { getAllPosts } from "@/data/post";
 import PageLayout from "@/layouts/Base.astro";
+import { menuLinks, siteConfig } from "@/site.config";
 import { collectionDateSort } from "@/utils/date";
 
-const MAX_RECENT_POSTS = 6;
 const allPosts = (await getAllPosts()).sort(collectionDateSort) as CollectionEntry<"post">[];
-const featuredPosts = allPosts.filter((post) => post.data.pinned).slice(0, 3);
-const recentPosts = allPosts.filter((post) => !post.data.pinned).slice(0, MAX_RECENT_POSTS);
+const homepagePosts = allPosts.slice(0, 8);
 ---
 
 <PageLayout meta={{ title: "首页" }}>
-	<section class="border-muted/25 border-b pb-10 sm:pb-12">
-		<div class="mb-5 flex items-center gap-3">
-			<h1 class="text-accent-2 text-4xl font-bold tracking-tight sm:text-5xl">
-				你好，我是 0xCat。
-			</h1>
-			<a class="text-accent hover:text-link mt-2" href="/rss.xml" title="RSS 订阅">
-				<span class="sr-only">RSS 订阅</span>
-				<Icon aria-hidden="true" class="h-5 w-5" focusable="false" name="mdi:rss" />
-			</a>
+	<section class="psi-home" aria-labelledby="profile-name">
+		<div class="profile">
+			<img class="profile__avatar" src="/icon.svg" alt="0xCat avatar" width="60" height="60" />
+			<div class="profile__text">
+				<div class="profile__identity">
+					<h1 id="profile-name">0xCat</h1>
+					<span>@{siteConfig.author}</span>
+				</div>
+				<p>CTF / Web Security / 靶场实践</p>
+			</div>
 		</div>
-		<p class="max-w-2xl text-base leading-8 sm:text-lg">
-			这里记录 CTF 解题过程、Web
-			安全研究与靶场实践。文章尽量保留完整命令、代码和复现步骤，方便回看，也方便你复现。
-		</p>
-		<div class="mt-5"><SocialList /></div>
-	</section>
 
-	{
-		featuredPosts.length > 0 && (
-			<section class="border-muted/25 border-b py-10 sm:py-12">
-				<h2 class="text-accent-2 text-2xl font-semibold tracking-tight">精选文章</h2>
-				<ul role="list">
-					{featuredPosts.map((post) => (
-						<HomePostCard post={post} />
-					))}
-				</ul>
-			</section>
-		)
-	}
+		<div class="home-links">
+			<nav class="home-links__left" aria-label="主导航">
+				{menuLinks.filter((link) => link.path !== "/").map((link) => (
+					<a href={link.path}>{link.title}</a>
+				))}
+				<a href="/rss.xml">RSS</a>
+			</nav>
+			<div class="home-links__right">
+				<Search />
+				<SocialList />
+				<ThemeToggle />
+			</div>
+		</div>
 
-	<section class="py-10 sm:py-12">
-		<h2 class="text-accent-2 text-2xl font-semibold tracking-tight">最近更新</h2>
-		{
-			recentPosts.length > 0 ? (
-				<ul role="list">
-					{recentPosts.map((post) => (
-						<HomePostCard post={post} />
-					))}
-				</ul>
+		<div class="brief prose">
+			<p>你好，我是 0xCat，一名安全爱好者。</p>
+			<p>这里记录 CTF 解题过程、Web 安全研究与靶场实践，保留命令、代码和完整复现路径。</p>
+			<p>文章在 Obsidian 中维护，以 Markdown 编写，并通过 Astro 构建发布。</p>
+		</div>
+
+		<section class="layout-list" aria-labelledby="latest-posts">
+			<h2 id="latest-posts" class="section-title">最近文章</h2>
+			{homepagePosts.length > 0 ? (
+				<>
+					<ul class="post-list" role="list">
+						{homepagePosts.map((post) => (
+							<HomePostCard post={post} featured={post.data.pinned} />
+						))}
+					</ul>
+					<div class="read-more"><a href="/posts/">更多 »</a></div>
+				</>
 			) : (
-				<p class="text-muted mt-6">文章正在整理中。</p>
-			)
-		}
+				<p class="empty-state">文章正在整理中。</p>
+			)}
+		</section>
 	</section>
-
-	<div class="text-center">
-		<a class="cactus-link inline-flex items-center gap-1 font-semibold" href="/posts/">
-			查看全部文章 <span aria-hidden="true">→</span>
-		</a>
-	</div>
 </PageLayout>

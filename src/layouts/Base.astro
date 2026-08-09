@@ -9,10 +9,12 @@ import type { SiteMeta } from "@/types";
 
 interface Props {
 	meta: SiteMeta;
+	variant?: "default" | "post";
 }
 
 const {
 	meta: { articleDate, description = siteConfig.description, ogImage, title },
+	variant = "default",
 } = Astro.props;
 ---
 
@@ -21,11 +23,9 @@ const {
 		<BaseHead articleDate={articleDate} description={description} ogImage={ogImage} title={title} />
 		<ThemeProvider />
 	</head>
-	<body
-		class="bg-global-bg text-global-text mx-auto flex min-h-screen max-w-3xl flex-col px-4 pt-10 font-sans text-sm font-normal antialiased sm:px-8 sm:pt-14"
-	>
+	<body class:list={["site-shell", Astro.url.pathname === "/" && "home-page", variant === "post" && "post-page"]}>
 		<SkipLink />
-		<Header />
+		<Header compact={variant === "post"} />
 		<main id="main">
 			<slot />
 		</main>

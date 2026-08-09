@@ -1,42 +1,21 @@
 ---
 import { Icon } from "astro-icon/components";
 
-/** 
-	Uses https://www.astroicon.dev/getting-started/
-	Find icons via guide: https://www.astroicon.dev/guides/customization/#open-source-icon-sets
-	Only installed pack is: @iconify-json/mdi
-*/
-const socialLinks: {
-	friendlyName: string;
-	isWebmention?: boolean;
-	link: string;
-	name: string;
-}[] = [
+const socialLinks = [
 	{
-		friendlyName: "Github",
+		friendlyName: "GitHub",
 		link: "https://github.com/zhaochoudecat",
 		name: "mdi:github",
 	},
 ];
 ---
 
-<div class="flex flex-wrap items-center gap-x-2">
-	<p class="text-muted">找到我：</p>
-	<ul class="flex flex-1 items-center gap-x-2 sm:flex-initial">
-		{
-			socialLinks.map(({ friendlyName, isWebmention, link, name }) => (
-				<li class="flex">
-					<a
-						class="hover:text-link inline-block"
-						href={link}
-						rel={`noreferrer ${isWebmention ? "me authn" : ""}`}
-						target="_blank"
-					>
-						<Icon aria-hidden="true" class="h-6 w-6" focusable="false" name={name} />
-						<span class="sr-only">{friendlyName}</span>
-					</a>
-				</li>
-			))
-		}
-	</ul>
-</div>
+<ul class="social-list" aria-label="社交链接">
+	{socialLinks.map(({ friendlyName, link, name }) => (
+		<li>
+			<a href={link} rel="noreferrer me" target="_blank" aria-label={friendlyName}>
+				<Icon aria-hidden="true" class="social-list__icon" focusable="false" name={name} />
+			</a>
+		</li>
+	))}
+</ul>

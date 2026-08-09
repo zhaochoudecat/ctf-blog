@@ -1,7 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import type { GetStaticPaths, Page } from "astro";
-import { Icon } from "astro-icon/components";
 import PostPreview from "@/components/blog/PostPreview.astro";
 import Pagination from "@/components/Paginator.astro";
 import { getAllPosts, getUniqueTags, groupPostsByYear } from "@/data/post";
@@ -9,107 +8,56 @@ import PageLayout from "@/layouts/Base.astro";
 import { collectionDateSort } from "@/utils/date";
 
 export const getStaticPaths = (async ({ paginate }) => {
-	const MAX_POSTS_PER_PAGE = 10;
-	const MAX_TAGS = 7;
-	const MAX_PINNED_POSTS = 3;
-	const allPosts = await getAllPosts();
-	const allPostsByDate = allPosts.sort(collectionDateSort);
-	const uniqueTags = getUniqueTags(allPosts).slice(0, MAX_TAGS);
-	const pinnedPosts = allPostsByDate
-		.values()
-		.filter((post) => post.data.pinned)
-		.take(MAX_PINNED_POSTS)
-		.toArray();
-	return paginate(allPostsByDate, {
-		pageSize: MAX_POSTS_PER_PAGE,
-		props: { uniqueTags, pinnedPosts },
-	});
+	const allPosts = (await getAllPosts()).sort(collectionDateSort);
+	return paginate(allPosts, { pageSize: 20, props: { uniqueTags: getUniqueTags(allPosts) } });
 }) satisfies GetStaticPaths;
 
 interface Props {
 	page: Page<CollectionEntry<"post">>;
 	uniqueTags: string[];
-	pinnedPosts: CollectionEntry<"post">[];
 }
 
-const { page, uniqueTags, pinnedPosts } = Astro.props;
-const meta = { description: "CTF、Web 安全与靶场实践文章归档", title: "文章" };
+const { page, uniqueTags } = Astro.props;
+const groupedByYear = groupPostsByYear(page.data);
+const descYearKeys = Object.keys(groupedByYear).sort((a, b) => +b - +a);
 const paginationProps = {
 	...(page.url.prev && { prevUrl: { text: "← 上一页", url: page.url.prev } }),
 	...(page.url.next && { nextUrl: { text: "下一页 →", url: page.url.next } }),
 };
-const groupedByYear = groupPostsByYear(page.data);
-const descYearKeys = Object.keys(groupedByYear).sort((a, b) => +b - +a);
 ---
 
-<PageLayout meta={meta}>
-	<div class="mb-12 flex items-center gap-3">
-		<h1 class="title">文章</h1>
-		<a class="text-accent" href="/rss.xml" target="_blank">
-			<span class="sr-only">RSS 订阅</span>
-			<Icon aria-hidden="true" class="h-6 w-6" focusable="false" name="mdi:rss" />
-		</a>
+<PageLayout meta={{ description: "CTF、Web 安全与靶场实践文章归档", title: "文章" }}>
+	<div class="section-heading">
+		<h1>文章</h1>
+		<p>CTF writeup、Web 安全研究与复现记录。</p>
 	</div>
-	<div class="grid sm:grid-cols-[3fr_1fr] sm:gap-x-8 sm:gap-y-16">
-		<div>
-			{
-				pinnedPosts.length > 0 && (
-					<section class="mb-16">
-						<h2 class="title mb-6 text-xl">精选文章</h2>
-						<ul class="space-y-4" role="list">
-							{pinnedPosts.map((post) => (
-								<li class="grid gap-1 sm:grid-cols-[auto_1fr]">
-									<PostPreview post={post} />
-								</li>
-							))}
-						</ul>
-					</section>
-				)
-			}
-			{
-				descYearKeys.map((yearKey) => (
-					<section class="mb-16">
-						<h2 id={`year-${yearKey}`} class="title text-lg">
-							<span class="sr-only">发布年份：</span>
-							{yearKey}
-						</h2>
-						<ul class="mt-5 space-y-4 text-start">
-							{groupedByYear[yearKey]?.map((post) => (
-								<li class="grid gap-1 sm:grid-cols-[auto_1fr] sm:[&_q]:col-start-2">
-									<PostPreview post={post} />
-								</li>
-							))}
-						</ul>
-					</section>
-				))
-			}
-			<Pagination {...paginationProps} />
-		</div>
-		{
-			!!uniqueTags.length && (
-				<aside>
-					<h2 class="title mb-4 flex items-center gap-1 text-lg">
-						<Icon aria-hidden="true" class="h-6 w-6" focusable="false" name="mdi:tag-outline" />
-						标签
-					</h2>
-					<ul class="flex flex-wrap gap-2">
-						{uniqueTags.map((tag) => (
-							<li>
-								<a class="cactus-link flex items-center justify-center" href={`/tags/${tag}/`}>
-									<span aria-hidden="true">#</span>
-									<span class="sr-only">查看该标签的全部文章：</span>
-									{tag}
-								</a>
+
+	<div class="post-list-page">
+		<div class="post-list-page__main">
+			{descYearKeys.map((yearKey) => (
+				<section class="year-section" aria-labelledby={`year-${yearKey}`}>
+					<h2 id={`year-${yearKey}`}>{yearKey}</h2>
+					<ul class="post-list" role="list">
+						{groupedByYear[yearKey]?.map((post) => (
+							<li class:list={["post-row", post.data.pinned && "post-row--featured"]}>
+								<PostPreview post={post} />
 							</li>
 						))}
 					</ul>
-					<span class="mt-4 block sm:text-end">
-						<a class="hover:text-link" href="/tags/">
-							查看全部 <span aria-hidden="true">→</span>
-						</a>
-					</span>
-				</aside>
-			)
-		}
+				</section>
+			))}
+			<Pagination {...paginationProps} />
+		</div>
+
+		{uniqueTags.length > 0 && (
+			<aside class="tag-cloud" aria-label="文章标签">
+				<h2>标签</h2>
+				<ul>
+					{uniqueTags.map((tag) => (
+						<li><a href={`/tags/${tag}/`}>#{tag}</a></li>
+					))}
+				</ul>
+			</aside>
+		)}
 	</div>
 </PageLayout>

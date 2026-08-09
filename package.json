@@ -5,8 +5,11 @@
 	"private": true,
 	"scripts": {
 		"postinstall": "pnpm rebuild sharp",
+		"sync:obsidian": "node scripts/sync-obsidian.mjs",
+		"predev": "pnpm sync:obsidian",
 		"dev": "astro dev",
 		"start": "astro dev",
+		"prebuild": "pnpm sync:obsidian",
 		"build": "astro build",
 		"postbuild": "pagefind --site dist",
 		"preview": "astro preview",

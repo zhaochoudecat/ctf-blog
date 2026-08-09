@@ -1,5 +1,7 @@
 # CTF Notes
 
+线上地址：[ctf-blog-mocha.vercel.app](https://ctf-blog-mocha.vercel.app/)
+
 一个面向 CTF Writeup 的 Astro 博客：保留 Astro Cactus 的 Markdown、MDX、Expressive Code、目录、搜索、标签、RSS、深浅主题与 OG 图片能力，首页采用 AstroPaper 风格的极简文章列表。
 
 ## 本地运行
@@ -26,7 +28,7 @@ Windows、macOS、GitHub 与 Vercel 的完整工作流见 [同步与发布说明
 
 ## 部署
 
-项目使用 Vercel Git 集成。`main` 分支为生产环境，功能分支自动生成预览部署。
+生产站点托管在 Vercel，`main` 分支是唯一生产源码。项目首次通过 Vercel API 部署；在 [Vercel Git 设置](https://vercel.com/luoyunzong1/ctf-blog/settings/git) 中连接本仓库后，`main` 更新会自动生产部署，功能分支会生成预览部署。
 
 ## 上游
 

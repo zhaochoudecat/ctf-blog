@@ -1,38 +1,22 @@
 import type { APIRoute } from "astro";
-import satori, { type SatoriOptions } from "satori";
-import { html } from "satori-html";
 import sharp from "sharp";
-import RobotoMonoBold from "@/assets/roboto-mono-700.ttf";
-import RobotoMono from "@/assets/roboto-mono-regular.ttf";
 import { siteConfig } from "@/site.config";
 
 export const prerender = true;
 
-const options: SatoriOptions = {
-	fonts: [
-		{ data: Buffer.from(RobotoMono), name: "Roboto Mono", style: "normal", weight: 400 },
-		{ data: Buffer.from(RobotoMonoBold), name: "Roboto Mono", style: "normal", weight: 700 },
-	],
-	height: 630,
-	width: 1200,
-};
-
 export const GET: APIRoute = async () => {
-	const markup = html`<div tw="flex h-full w-full flex-col bg-[#111827] p-16 text-white">
-		<div tw="flex flex-1 flex-col justify-center">
-			<p tw="mb-5 text-2xl text-[#38bdf8]">Writeups / Web Security / Labs</p>
-			<h1 tw="m-0 text-7xl font-bold">${siteConfig.title}</h1>
-			<p tw="mt-7 text-3xl text-[#cbd5e1]">Reproducible notes for CTF players.</p>
-		</div>
-		<div tw="flex items-center justify-between border-t-2 border-[#38bdf8] pt-8 text-2xl">
-			<p>github.com/zhaochoudecat</p>
-			<p>@${siteConfig.author}</p>
-		</div>
-	</div>`;
+	const svg = `
+		<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+			<rect width="1200" height="630" fill="#111827"/>
+			<text x="64" y="190" fill="#38bdf8" font-family="monospace" font-size="26">Writeups / Web Security / Labs</text>
+			<text x="64" y="280" fill="#ffffff" font-family="monospace" font-size="72" font-weight="700">${siteConfig.title}</text>
+			<text x="64" y="350" fill="#cbd5e1" font-family="monospace" font-size="32">Reproducible notes for CTF players.</text>
+			<path d="M64 454H1136" stroke="#38bdf8" stroke-width="2"/>
+			<text x="64" y="535" fill="#ffffff" font-family="monospace" font-size="24">github.com/zhaochoudecat</text>
+			<text x="1136" y="535" fill="#ffffff" font-family="monospace" font-size="24" text-anchor="end">@${siteConfig.author}</text>
+		</svg>`;
 
-	const svg = await satori(markup, options);
 	const png = await sharp(Buffer.from(svg)).png().toBuffer();
-
 	return new Response(new Uint8Array(png), {
 		headers: {
 			"Cache-Control": "public, max-age=31536000, immutable",

@@ -1,0 +1,36 @@
+---
+import ObsidianTree from "@/components/blog/ObsidianTree.astro";
+import { buildObsidianTree, countObsidianFiles } from "@/data/obsidian";
+import { getAllPosts } from "@/data/post";
+import PageLayout from "@/layouts/Base.astro";
+
+const tree = await buildObsidianTree(await getAllPosts());
+const fileCount = countObsidianFiles(tree);
+---
+
+<PageLayout
+	meta={{
+		description: "按 Obsidian Vault 文件夹结构浏览 CTF 和 Web 安全笔记。",
+		title: "目录",
+	}}
+>
+	<section class="directory-page" aria-labelledby="directory-title">
+		<div class="section-heading directory-page__heading">
+			<h1 id="directory-title">Obsidian 目录</h1>
+			<p>按文档结构浏览笔记，点击文件名打开对应文章。</p>
+		</div>
+
+		<div class="directory-summary" aria-live="polite">
+			<span>{fileCount} 篇笔记</span>
+			<span>可展开文件夹查看内容</span>
+		</div>
+
+		{fileCount > 0 ? (
+			<nav class="directory-nav" aria-label="Obsidian 文档目录">
+				<ObsidianTree node={tree} />
+			</nav>
+		) : (
+			<p class="empty-state">暂时没有可显示的 Obsidian 笔记。</p>
+		)}
+	</section>
+</PageLayout>

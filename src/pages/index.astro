@@ -1,9 +1,9 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import HomePostCard from "@/components/blog/HomePostCard.astro";
 import Search from "@/components/Search.astro";
 import SocialList from "@/components/SocialList.astro";
 import ThemeToggle from "@/components/ThemeToggle.astro";
-import HomePostCard from "@/components/blog/HomePostCard.astro";
 import { getAllPosts } from "@/data/post";
 import PageLayout from "@/layouts/Base.astro";
 import { menuLinks, siteConfig } from "@/site.config";
@@ -31,7 +31,6 @@ const homepagePosts = allPosts.slice(0, 8);
 				{menuLinks.filter((link) => link.path !== "/").map((link) => (
 					<a href={link.path}>{link.title}</a>
 				))}
-				<a href="/rss.xml">RSS</a>
 			</nav>
 			<div class="home-links__right">
 				<Search />

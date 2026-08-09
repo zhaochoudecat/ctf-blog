@@ -9,6 +9,7 @@ import robotsTxt from "astro-robots-txt";
 import webmanifest from "astro-webmanifest";
 import { satteriAdmonitionsPlugin } from "./src/plugins/admonitions";
 import { satteriGithubCardPlugin } from "./src/plugins/github-cards";
+import { satteriObsidianHighlightPlugin } from "./src/plugins/obsidian-highlight";
 import {
 	satteriAutolinkHeadingsPlugin,
 	satteriExternalLinksPlugin,
@@ -72,6 +73,7 @@ export default defineConfig({
 				satteriReadingTimePlugin(),
 				satteriGithubCardPlugin(),
 				satteriAdmonitionsPlugin(),
+				satteriObsidianHighlightPlugin(),
 			],
 			hastPlugins: [
 				satteriHeadingIdsPlugin(),

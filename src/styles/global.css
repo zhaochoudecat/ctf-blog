@@ -173,7 +173,7 @@ body.site-shell {
 	background: var(--psi-bg);
 	color: var(--psi-text);
 	font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-	font-size: 16px;
+	font-size: 17px;
 	line-height: 1.75;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
@@ -807,6 +807,13 @@ body.home-page #main {
 	word-wrap: break-word;
 }
 
+.prose mark {
+	padding: 0 0.15em;
+	border-radius: 2px;
+	background: color-mix(in srgb, var(--psi-primary) 24%, transparent);
+	color: inherit;
+}
+
 .prose a {
 	color: var(--psi-primary);
 	font-weight: inherit;
@@ -1066,4 +1073,100 @@ html[data-theme="dark"] .prose img {
 	.site-header__tools {
 		margin-left: 0;
 	}
+}
+
+.directory-page {
+	padding: 1.5em 0 3em;
+}
+
+.directory-page__heading {
+	margin-bottom: 1.5em;
+}
+
+.directory-summary {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5em 1em;
+	margin: 0 15px 1em;
+	color: var(--psi-muted);
+	font-size: 0.85em;
+}
+
+.directory-summary span + span::before {
+	margin-right: 1em;
+	content: "·";
+}
+
+.directory-nav {
+	margin: 0 15px;
+	border-top: 1px solid var(--psi-decoration);
+}
+
+.obsidian-tree,
+.obsidian-tree ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.obsidian-tree ul {
+	margin-left: 1.15em;
+	border-left: 1px solid var(--psi-decoration);
+}
+
+.obsidian-tree__folder,
+.obsidian-tree__file {
+	border-bottom: 1px dotted var(--psi-decoration);
+}
+
+.obsidian-tree summary,
+.obsidian-tree__file a {
+	display: flex;
+	align-items: center;
+	gap: 0.65em;
+	min-height: 2.7em;
+	padding: 0.35em 0.65em;
+	color: var(--psi-text);
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.obsidian-tree summary {
+	font-weight: 600;
+	list-style: none;
+}
+
+.obsidian-tree summary::-webkit-details-marker {
+	display: none;
+}
+
+.obsidian-tree summary:hover,
+.obsidian-tree__file a:hover {
+	background: var(--psi-primary-decoration);
+	color: var(--psi-primary);
+}
+
+.obsidian-tree__folder-icon,
+.obsidian-tree__file-icon {
+	display: inline-flex;
+	width: 1.1em;
+	justify-content: center;
+	color: var(--psi-primary);
+	font-size: 0.95em;
+}
+
+.obsidian-tree details:not([open]) > summary .obsidian-tree__folder-icon {
+	transform: rotate(-90deg);
+}
+
+.obsidian-tree__count {
+	margin-left: auto;
+	color: var(--psi-muted);
+	font-size: 0.8em;
+	font-weight: 400;
+}
+
+.obsidian-tree__file-name {
+	min-width: 0;
+	word-break: break-word;
 }

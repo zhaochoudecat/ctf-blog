@@ -31,6 +31,5 @@ content/.obsidian/plugins/
 content/.obsidian/themes/
 content/.trash/
 
-# Generated locally from the sibling Obsidian vault
-content/posts/_obsidian/
-public/_obsidian/
+# Local-only Obsidian workspace state is ignored above; synced publishable notes
+# remain tracked so remote builds (including Vercel) have the same content.
